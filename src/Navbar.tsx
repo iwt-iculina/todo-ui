@@ -21,7 +21,12 @@ const AppNavbar: React.FC = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
           {isLoggedIn ? (
-            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            <>
+              <Nav.Link as={Link} to="/todos">
+                Todos
+              </Nav.Link>
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            </>
           ) : (
             <>
               <Nav.Link as={Link} to="/login">

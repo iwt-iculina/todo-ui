@@ -1,4 +1,3 @@
-// Login.tsx
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +22,8 @@ const Login: React.FC = () => {
 
       localStorage.setItem("jwtToken", response.data.token);
       login();
-      setMessage("Login successful!");
-      navigate("/");
+
+      navigate("/todos");
     } catch (error) {
       const defaultErrorMessage = "Login failed!";
       if (axios.isAxiosError(error) && error.response) {

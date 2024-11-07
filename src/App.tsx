@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppNavbar from "./Navbar";
 import Login from "./Login";
 import Registration from "./Registration";
 import { AuthProvider } from "./AuthContext";
+import TodosPage from "./TodosPage";
 
 const App: React.FC = () => {
-  const isLoggedIn = !!localStorage.getItem("jwtToken");
-
   return (
     <AuthProvider>
       <Router>
@@ -21,10 +15,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
-            <Route
-              path="/"
-              element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />}
-            />
+            <Route path="/todos" element={<TodosPage />} />
           </Routes>
         </div>
       </Router>
