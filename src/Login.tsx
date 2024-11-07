@@ -1,11 +1,16 @@
+// Login.tsx
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -17,8 +22,9 @@ const Login: React.FC = () => {
       });
 
       localStorage.setItem("jwtToken", response.data.token);
-
+      login();
       setMessage("Login successful!");
+      navigate("/");
     } catch (error) {
       const defaultErrorMessage = "Login failed!";
       if (axios.isAxiosError(error) && error.response) {

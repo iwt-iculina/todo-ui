@@ -1,13 +1,14 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const AppNavbar: React.FC = () => {
   const navigate = useNavigate();
-  const isLoggedIn = Boolean(localStorage.getItem("jwtToken"));
+  const { isLoggedIn, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("jwtToken");
+    logout();
     navigate("/login");
   };
 
