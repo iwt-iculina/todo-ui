@@ -97,6 +97,20 @@ const TodosPage: React.FC = () => {
     }
   };
 
+  const handleDeleteTodo = async (id: string) => {
+    try {
+      const token = localStorage.getItem("jwtToken");
+      await axios.delete(`http://localhost:8080/todos/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setTodos(todos.filter((todo) => todo.id !== id));
+    } catch (error) {
+      setError("Failed to delete todo. Please try again.");
+    }
+  };
+
   const openEditModal = (todo: Todo) => {
     setCurrentTodo(todo);
     setEditTitle(todo.title);
@@ -148,6 +162,9 @@ const TodosPage: React.FC = () => {
             <p>{todo.description}</p>
             <Button variant="secondary" onClick={() => openEditModal(todo)}>
               Edit
+            </Button>
+            <Button variant="danger" onClick={() => handleDeleteTodo(todo.id)}>
+              Delete
             </Button>
           </ListGroup.Item>
         ))}
