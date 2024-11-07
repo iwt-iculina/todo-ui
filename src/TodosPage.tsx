@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Container, ListGroup, Alert, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  ListGroup,
+  Alert,
+  Form,
+  Button,
+  Modal,
+} from "react-bootstrap";
 import axios from "axios";
 
 interface Todo {
@@ -13,6 +20,7 @@ const TodosPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newDescription, setNewDescription] = useState<string>("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -51,6 +59,7 @@ const TodosPage: React.FC = () => {
       setTodos([...todos, response.data]);
       setNewTitle("");
       setNewDescription("");
+      setShowModal(false);
     } catch (error) {
       setError("Failed to create todo. Please try again.");
     }
@@ -60,29 +69,39 @@ const TodosPage: React.FC = () => {
     <Container>
       <h1>Todos</h1>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleCreateTodo}>
-        <Form.Group controlId="formTitle">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formDescription">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Create Todo
-        </Button>
-      </Form>
+      <Button variant="primary" onClick={() => setShowModal(true)}>
+        Add
+      </Button>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Todo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleCreateTodo}>
+            <Form.Group controlId="formTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Create Todo
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
       <ListGroup>
         {todos.map((todo) => (
           <ListGroup.Item key={todo.id}>
