@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, ListGroup, Alert } from "react-bootstrap";
+import { Container, ListGroup, Alert, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 interface Todo {
@@ -11,6 +11,8 @@ interface Todo {
 const TodosPage: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -30,10 +32,57 @@ const TodosPage: React.FC = () => {
     fetchTodos();
   }, []);
 
+  const handleCreateTodo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("jwtToken");
+      const response = await axios.post(
+        "http://localhost:8080/todos/",
+        {
+          title: newTitle,
+          description: newDescription,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTodos([...todos, response.data]);
+      setNewTitle("");
+      setNewDescription("");
+    } catch (error) {
+      setError("Failed to create todo. Please try again.");
+    }
+  };
+
   return (
-    <Container className="mt-5">
-      <h2>My Todos</h2>
+    <Container>
+      <h1>Todos</h1>
       {error && <Alert variant="danger">{error}</Alert>}
+      <Form onSubmit={handleCreateTodo}>
+        <Form.Group controlId="formTitle">
+          <Form.Label>Title</Form.Label>
+          <Form.Control
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="formDescription">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            type="text"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Create Todo
+        </Button>
+      </Form>
       <ListGroup>
         {todos.map((todo) => (
           <ListGroup.Item key={todo.id}>
