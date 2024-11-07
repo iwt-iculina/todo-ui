@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
-  ListGroup,
-  Alert,
-  Form,
   Button,
   Modal,
+  Form,
+  ListGroup,
+  Alert,
 } from "react-bootstrap";
 import axios from "axios";
 
@@ -17,10 +17,14 @@ interface Todo {
 
 const TodosPage: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newDescription, setNewDescription] = useState<string>("");
+  const [editTitle, setEditTitle] = useState<string>("");
+  const [editDescription, setEditDescription] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -65,6 +69,40 @@ const TodosPage: React.FC = () => {
     }
   };
 
+  const handleEditTodo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("jwtToken");
+      const response = await axios.put(
+        `http://localhost:8080/todos/${currentTodo?.id}`,
+        {
+          title: editTitle,
+          description: editDescription,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTodos(
+        todos.map((todo) =>
+          todo.id === currentTodo?.id ? response.data : todo
+        )
+      );
+      setShowEditModal(false);
+    } catch (error) {
+      setError("Failed to edit todo. Please try again.");
+    }
+  };
+
+  const openEditModal = (todo: Todo) => {
+    setCurrentTodo(todo);
+    setEditTitle(todo.title);
+    setEditDescription(todo.description);
+    setShowEditModal(true);
+  };
+
   return (
     <Container>
       <h1>Todos</h1>
@@ -102,11 +140,44 @@ const TodosPage: React.FC = () => {
           </Form>
         </Modal.Body>
       </Modal>
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Todo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleEditTodo}>
+            <Form.Group controlId="formEditTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formEditDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
       <ListGroup>
         {todos.map((todo) => (
           <ListGroup.Item key={todo.id}>
             <h5>{todo.title}</h5>
             <p>{todo.description}</p>
+            <Button variant="secondary" onClick={() => openEditModal(todo)}>
+              Edit
+            </Button>
           </ListGroup.Item>
         ))}
       </ListGroup>
