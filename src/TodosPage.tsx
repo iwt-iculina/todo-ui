@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import axios from "axios";
+import TodoForm from "./TodoForm";
 
 interface Todo {
   id: string;
@@ -115,29 +116,14 @@ const TodosPage: React.FC = () => {
           <Modal.Title>Create Todo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleCreateTodo}>
-            <Form.Group controlId="formTitle">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Create Todo
-            </Button>
-          </Form>
+          <TodoForm
+            title={newTitle}
+            description={newDescription}
+            setTitle={setNewTitle}
+            setDescription={setNewDescription}
+            handleSubmit={handleCreateTodo}
+            buttonText="Create Todo"
+          />
         </Modal.Body>
       </Modal>
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
@@ -145,29 +131,14 @@ const TodosPage: React.FC = () => {
           <Modal.Title>Edit Todo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleEditTodo}>
-            <Form.Group controlId="formEditTitle">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formEditDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                value={editDescription}
-                onChange={(e) => setEditDescription(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Save Changes
-            </Button>
-          </Form>
+          <TodoForm
+            title={editTitle}
+            description={editDescription}
+            setTitle={setEditTitle}
+            setDescription={setEditDescription}
+            handleSubmit={handleEditTodo}
+            buttonText="Save Changes"
+          />
         </Modal.Body>
       </Modal>
       <ListGroup>
