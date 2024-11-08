@@ -184,7 +184,7 @@ const TodosPage: React.FC = () => {
             setTitle={setNewTitle}
             setDescription={setNewDescription}
             handleSubmit={handleCreateTodo}
-            buttonText="Create Todo"
+            buttonText="Create"
           />
         </Modal.Body>
       </Modal>
@@ -199,7 +199,7 @@ const TodosPage: React.FC = () => {
             setTitle={setEditTitle}
             setDescription={setEditDescription}
             handleSubmit={handleEditTodo}
-            buttonText="Save Changes"
+            buttonText="Save"
           />
         </Modal.Body>
       </Modal>

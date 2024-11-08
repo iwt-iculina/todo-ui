@@ -20,7 +20,7 @@ const TodoForm: React.FC<TodoFormProps> = ({
 }) => {
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formTitle">
+      <Form.Group controlId="formTitle" className="mb-3">
         <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
@@ -29,7 +29,7 @@ const TodoForm: React.FC<TodoFormProps> = ({
           required
         />
       </Form.Group>
-      <Form.Group controlId="formDescription">
+      <Form.Group controlId="formDescription" className="mb-3">
         <Form.Label>Description</Form.Label>
         <Form.Control
           type="text"
