@@ -134,7 +134,14 @@ const TodosPage: React.FC = () => {
     <Container>
       <h1>Todos</h1>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form>
+      <Button
+        variant="primary"
+        onClick={() => setShowModal(true)}
+        className="mb-3"
+      >
+        Add
+      </Button>
+      <Form className="mb-3">
         <Form.Group controlId="filter">
           <Form.Label>Filter</Form.Label>
           <Form.Control
@@ -155,9 +162,6 @@ const TodosPage: React.FC = () => {
           </Form.Control>
         </Form.Group>
       </Form>
-      <Button variant="primary" onClick={() => setShowModal(true)}>
-        Add
-      </Button>
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Create Todo</Modal.Title>
@@ -188,7 +192,7 @@ const TodosPage: React.FC = () => {
           />
         </Modal.Body>
       </Modal>
-      <ListGroup>
+      <ListGroup className="mb-3">
         {todos.map((todo) => (
           <ListGroup.Item key={todo.id}>
             <h5>{todo.title}</h5>
