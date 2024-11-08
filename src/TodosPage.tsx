@@ -9,8 +9,8 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import axios from "axios";
 import TodoForm from "./TodoForm";
+import backendAPI from "./axios";
 
 interface Todo {
   id: string;
@@ -35,11 +35,7 @@ const TodosPage: React.FC = () => {
 
   const fetchTodos = async (page = 1, filter = "", sort = "asc") => {
     try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await axios.get("http://localhost:8080/todos/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await backendAPI.get("/todos/", {
         params: {
           page,
           filter,
@@ -62,19 +58,10 @@ const TodosPage: React.FC = () => {
   const handleCreateTodo = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("jwtToken");
-      await axios.post(
-        "http://localhost:8080/todos/",
-        {
-          title: newTitle,
-          description: newDescription,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await backendAPI.post("/todos/", {
+        title: newTitle,
+        description: newDescription,
+      });
 
       setNewTitle("");
       setNewDescription("");
@@ -89,19 +76,10 @@ const TodosPage: React.FC = () => {
   const handleEditTodo = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("jwtToken");
-      const response = await axios.put(
-        `http://localhost:8080/todos/${currentTodo?.id}`,
-        {
-          title: editTitle,
-          description: editDescription,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await backendAPI.put(`/todos/${currentTodo?.id}`, {
+        title: editTitle,
+        description: editDescription,
+      });
       setTodos(
         todos.map((todo) =>
           todo.id === currentTodo?.id ? response.data : todo
@@ -115,12 +93,7 @@ const TodosPage: React.FC = () => {
 
   const handleDeleteTodo = async (id: string) => {
     try {
-      const token = localStorage.getItem("jwtToken");
-      await axios.delete(`http://localhost:8080/todos/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await backendAPI.delete(`/todos/${id}`);
       fetchTodos(currentPage, filter, sort);
     } catch (error) {
       setError("Failed to delete todo. Please try again.");

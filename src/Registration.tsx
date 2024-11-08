@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import axios from "axios";
+import backendAPI from "./axios";
 
 const Registration: React.FC = () => {
   const [name, setName] = useState("");
@@ -12,7 +13,7 @@ const Registration: React.FC = () => {
     event.preventDefault();
 
     try {
-      await axios.post("http://localhost:8080/user/register", {
+      await backendAPI.post("/user/register", {
         name,
         email,
         password,

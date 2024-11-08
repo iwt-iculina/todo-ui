@@ -3,6 +3,7 @@ import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import backendAPI from "./axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const Login: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/user/login", {
+      const response = await backendAPI.post("/user/login", {
         email,
         password,
       });
