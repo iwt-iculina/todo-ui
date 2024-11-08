@@ -229,16 +229,17 @@ const TodosPage: React.FC = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <div className="pagination">
+      <div className="pagination d-flex align-items-center justify-content-center mt-3 mb-3">
         <Button
           variant="secondary"
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
+          className="me-3"
         >
           Previous
         </Button>
-        <span>
-          {currentPage} of {Math.max(totalPages, 1)}
+        <span className="px-3">
+          {currentPage} of {totalPages}
         </span>
         <Button
           variant="secondary"
@@ -246,6 +247,7 @@ const TodosPage: React.FC = () => {
             setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
           }
           disabled={currentPage === totalPages}
+          className="ms-3"
         >
           Next
         </Button>
