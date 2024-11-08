@@ -26,24 +26,36 @@ const TodosPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("asc");
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchTodos = async (page = 1, filter = "", sort = "asc") => {
+    try {
+      const token = localStorage.getItem("jwtToken");
+      const response = await axios.get("http://localhost:8080/todos/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page,
+          filter,
+          sort,
+        },
+      });
+      console.log(response.data);
+      setTodos(response.data.data);
+      const totalPages = Math.ceil(response.data.total / response.data.limit);
+      setTotalPages(totalPages);
+    } catch (error) {
+      setError("Failed to load todos. Please try again.");
+    }
+  };
 
   useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const token = localStorage.getItem("jwtToken");
-        const response = await axios.get("http://localhost:8080/todos/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setTodos(response.data.data);
-      } catch (error) {
-        setError("Failed to load todos. Please try again.");
-      }
-    };
-
-    fetchTodos();
-  }, []);
+    fetchTodos(currentPage, filter, sort);
+  }, [currentPage, filter, sort]);
 
   const handleCreateTodo = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,6 +134,27 @@ const TodosPage: React.FC = () => {
     <Container>
       <h1>Todos</h1>
       {error && <Alert variant="danger">{error}</Alert>}
+      <Form>
+        <Form.Group controlId="filter">
+          <Form.Label>Filter</Form.Label>
+          <Form.Control
+            type="text"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId="sort">
+          <Form.Label>Sort</Form.Label>
+          <Form.Control
+            as="select"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </Form.Control>
+        </Form.Group>
+      </Form>
       <Button variant="primary" onClick={() => setShowModal(true)}>
         Add
       </Button>
@@ -169,6 +202,25 @@ const TodosPage: React.FC = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
+      <div className="pagination">
+        <Button
+          variant="secondary"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <span>Page {currentPage}</span>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
+          }
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+      </div>
     </Container>
   );
 };
