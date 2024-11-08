@@ -6,6 +6,8 @@ import {
   Form,
   ListGroup,
   Alert,
+  Row,
+  Col,
 } from "react-bootstrap";
 import axios from "axios";
 import TodoForm from "./TodoForm";
@@ -142,25 +144,32 @@ const TodosPage: React.FC = () => {
         Add
       </Button>
       <Form className="mb-3">
-        <Form.Group controlId="filter">
-          <Form.Label>Filter</Form.Label>
-          <Form.Control
-            type="text"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="sort">
-          <Form.Label>Sort</Form.Label>
-          <Form.Control
-            as="select"
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-          >
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </Form.Control>
-        </Form.Group>
+        <Row>
+          <Col md={8}>
+            <Form.Group controlId="filter">
+              <Form.Label>Filter</Form.Label>
+              <Form.Control
+                type="text"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                placeholder="Enter title"
+              />
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group controlId="sort">
+              <Form.Label>Sort</Form.Label>
+              <Form.Control
+                as="select"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+              >
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+              </Form.Control>
+            </Form.Group>
+          </Col>
+        </Row>
       </Form>
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
@@ -214,7 +223,9 @@ const TodosPage: React.FC = () => {
         >
           Previous
         </Button>
-        <span>Page {currentPage}</span>
+        <span>
+          {currentPage} of {Math.max(totalPages, 1)}
+        </span>
         <Button
           variant="secondary"
           onClick={() =>
