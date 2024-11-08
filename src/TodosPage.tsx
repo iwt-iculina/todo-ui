@@ -203,15 +203,29 @@ const TodosPage: React.FC = () => {
       </Modal>
       <ListGroup className="mb-3">
         {todos.map((todo) => (
-          <ListGroup.Item key={todo.id}>
-            <h5>{todo.title}</h5>
-            <p>{todo.description}</p>
-            <Button variant="secondary" onClick={() => openEditModal(todo)}>
-              Edit
-            </Button>
-            <Button variant="danger" onClick={() => handleDeleteTodo(todo.id)}>
-              Delete
-            </Button>
+          <ListGroup.Item
+            key={todo.id}
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div>
+              <h5>{todo.title}</h5>
+              <p>{todo.description}</p>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="secondary"
+                onClick={() => openEditModal(todo)}
+                className="mr-2"
+              >
+                Edit
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => handleDeleteTodo(todo.id)}
+              >
+                Delete
+              </Button>
+            </div>
           </ListGroup.Item>
         ))}
       </ListGroup>
