@@ -215,7 +215,7 @@ const TodosPage: React.FC = () => {
               <Button
                 variant="secondary"
                 onClick={() => openEditModal(todo)}
-                className="mr-2"
+                className="me-4"
               >
                 Edit
               </Button>
