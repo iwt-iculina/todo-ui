@@ -119,7 +119,15 @@ const TodosPage: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setTodos(todos.filter((todo) => todo.id !== id));
+      const updatedTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(updatedTodos);
+
+      const totalPages = Math.ceil(updatedTodos.length / 10);
+      setTotalPages(totalPages);
+
+      if (currentPage > totalPages) {
+        setCurrentPage(Math.max(totalPages, 1));
+      }
     } catch (error) {
       setError("Failed to delete todo. Please try again.");
     }
