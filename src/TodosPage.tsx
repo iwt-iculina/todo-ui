@@ -63,7 +63,7 @@ const TodosPage: React.FC = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("jwtToken");
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8080/todos/",
         {
           title: newTitle,
@@ -75,10 +75,12 @@ const TodosPage: React.FC = () => {
           },
         }
       );
-      setTodos([...todos, response.data]);
+
       setNewTitle("");
       setNewDescription("");
       setShowModal(false);
+
+      fetchTodos(currentPage, filter, sort);
     } catch (error) {
       setError("Failed to create todo. Please try again.");
     }
@@ -119,15 +121,7 @@ const TodosPage: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const updatedTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(updatedTodos);
-
-      const totalPages = Math.ceil(updatedTodos.length / 10);
-      setTotalPages(totalPages);
-
-      if (currentPage > totalPages) {
-        setCurrentPage(Math.max(totalPages, 1));
-      }
+      fetchTodos(currentPage, filter, sort);
     } catch (error) {
       setError("Failed to delete todo. Please try again.");
     }
