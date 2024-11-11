@@ -12,6 +12,7 @@ import {
 import { FaEdit, FaTrash } from "react-icons/fa";
 import TodoForm from "./TodoForm";
 import backendAPI from "./axios";
+import "./App.css";
 
 interface Todo {
   id: string;
@@ -109,7 +110,7 @@ const TodosPage: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container className="narrow-container">
       <h1>Todos</h1>
       {error && <Alert variant="danger">{error}</Alert>}
       <Button
