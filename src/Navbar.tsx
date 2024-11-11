@@ -26,7 +26,7 @@ const AppNavbar: React.FC = () => {
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand as={Link} to="/">
+      <Navbar.Brand as={Link} to="/todos">
         TODO APP
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
