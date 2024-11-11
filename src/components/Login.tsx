@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAuth } from "./AuthContext";
 import backendAPI from "../axios";
 import CustomToast from "./CustomToast";
+import "./Login.css";
 
 const Login: React.FC = () => {
   const location = useLocation();
@@ -48,7 +49,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="login-container">
       {showLogoutToast && (
         <CustomToast message="You have been logged out." duration={3000} />
       )}

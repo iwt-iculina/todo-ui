@@ -3,6 +3,7 @@ import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import backendAPI from "../axios";
+import "./Registration.css";
 
 const Registration: React.FC = () => {
   const [name, setName] = useState("");
@@ -35,7 +36,7 @@ const Registration: React.FC = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-5 registration-container">
       <h2>Register</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formName" className="mb-3">
