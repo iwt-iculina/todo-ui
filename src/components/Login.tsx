@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
 import backendAPI from "../axios";
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
 
       navigate("/todos");
     } catch (error) {
-      const defaultErrorMessage = "Login failed!";
+      const defaultErrorMessage = "Wrong credentials!";
       if (axios.isAxiosError(error) && error.response) {
         setMessage(error.response.data?.error || defaultErrorMessage);
       } else {
@@ -54,7 +54,7 @@ const Login: React.FC = () => {
         <CustomToast message="You have been logged out." duration={3000} />
       )}
       <h2>Login</h2>
-      <Form onSubmit={handleLogin}>
+      <Form onSubmit={handleLogin} className="mb-3">
         <Form.Group controlId="formEmail" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -85,6 +85,9 @@ const Login: React.FC = () => {
           {message}
         </Alert>
       )}
+      <p>
+        Don't have an account? <Link to="/register">Register here</Link>
+      </p>
     </Container>
   );
 };
