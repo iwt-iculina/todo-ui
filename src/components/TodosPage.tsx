@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import TodoForm from "./TodoForm";
-import backendAPI from "./axios";
+import backendAPI from "../axios";
 import "./App.css";
 
 interface Todo {

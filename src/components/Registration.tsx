@@ -1,32 +1,27 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "./AuthContext";
-import backendAPI from "./axios";
+import backendAPI from "../axios";
 
-const Login: React.FC = () => {
+const Registration: React.FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      const response = await backendAPI.post("/user/login", {
+      await backendAPI.post("/user/register", {
+        name,
         email,
         password,
       });
 
-      localStorage.setItem("jwtToken", response.data.token);
-      login();
-
-      navigate("/todos");
+      setMessage("Registration successful!");
     } catch (error) {
-      const defaultErrorMessage = "Login failed!";
+      const defaultErrorMessage = "Registration failed!";
       if (axios.isAxiosError(error) && error.response) {
         setMessage(error.response.data?.error || defaultErrorMessage);
       } else {
@@ -37,8 +32,17 @@ const Login: React.FC = () => {
 
   return (
     <Container className="mt-5">
-      <h2>Login</h2>
-      <Form onSubmit={handleLogin}>
+      <h2>Register</h2>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="formName" className="mb-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </Form.Group>
         <Form.Group controlId="formEmail" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -58,7 +62,7 @@ const Login: React.FC = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Login
+          Register
         </Button>
       </Form>
       {message && (
@@ -73,4 +77,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Registration;

@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import backendAPI from "./axios";
+import { useAuth } from "./AuthContext";
+import backendAPI from "../axios";
 
-const Registration: React.FC = () => {
-  const [name, setName] = useState("");
+const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      await backendAPI.post("/user/register", {
-        name,
+      const response = await backendAPI.post("/user/login", {
         email,
         password,
       });
 
-      setMessage("Registration successful!");
+      localStorage.setItem("jwtToken", response.data.token);
+      login();
+
+      navigate("/todos");
     } catch (error) {
-      const defaultErrorMessage = "Registration failed!";
+      const defaultErrorMessage = "Login failed!";
       if (axios.isAxiosError(error) && error.response) {
         setMessage(error.response.data?.error || defaultErrorMessage);
       } else {
@@ -32,17 +37,8 @@ const Registration: React.FC = () => {
 
   return (
     <Container className="mt-5">
-      <h2>Register</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formName" className="mb-3">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </Form.Group>
+      <h2>Login</h2>
+      <Form onSubmit={handleLogin}>
         <Form.Group controlId="formEmail" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -62,7 +58,7 @@ const Registration: React.FC = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Register
+          Login
         </Button>
       </Form>
       {message && (
@@ -77,4 +73,4 @@ const Registration: React.FC = () => {
   );
 };
 
-export default Registration;
+export default Login;
