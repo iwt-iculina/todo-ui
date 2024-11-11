@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
 import backendAPI from "../axios";
+import CustomToast from "./CustomToast";
 
 const Login: React.FC = () => {
   const location = useLocation();
@@ -13,6 +14,15 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [showLogoutToast, setShowLogoutToast] = useState(false);
+
+  useEffect(() => {
+    const loggedOut = "loggedOut";
+    if (sessionStorage.getItem(loggedOut)) {
+      setShowLogoutToast(true);
+      sessionStorage.removeItem(loggedOut);
+    }
+  }, []);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,6 +49,9 @@ const Login: React.FC = () => {
 
   return (
     <Container className="mt-5">
+      {showLogoutToast && (
+        <CustomToast message="You have been logged out." duration={3000} />
+      )}
       <h2>Login</h2>
       <Form onSubmit={handleLogin}>
         <Form.Group controlId="formEmail" className="mb-3">

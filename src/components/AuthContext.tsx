@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
+import { axiosLogout } from "../axios";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -17,8 +18,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = () => setIsLoggedIn(true);
   const logout = () => {
-    localStorage.removeItem("jwtToken");
     setIsLoggedIn(false);
+    axiosLogout();
   };
 
   return (

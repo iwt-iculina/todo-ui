@@ -24,17 +24,17 @@ backendAPI.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       if (error.response.config.url !== "/user/login") {
-        logout();
+        axiosLogout();
+        window.location.href = "/login";
       }
     }
     return Promise.reject(error);
   }
 );
 
-const logout = () => {
+export const axiosLogout = () => {
   localStorage.removeItem(jwtToken);
   sessionStorage.setItem("loggedOut", "true");
-  window.location.href = "/login";
 };
 
 export default backendAPI;
