@@ -9,6 +9,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import TodoForm from "./TodoForm";
 import backendAPI from "./axios";
 
@@ -187,18 +188,11 @@ const TodosPage: React.FC = () => {
               <p>{todo.description}</p>
             </div>
             <div className="ml-auto">
-              <Button
-                variant="secondary"
-                onClick={() => openEditModal(todo)}
-                className="me-4"
-              >
-                Edit
+              <Button variant="link" onClick={() => openEditModal(todo)}>
+                <FaEdit size={20} />
               </Button>
-              <Button
-                variant="danger"
-                onClick={() => handleDeleteTodo(todo.id)}
-              >
-                Delete
+              <Button variant="link" onClick={() => handleDeleteTodo(todo.id)}>
+                <FaTrash size={20} />
               </Button>
             </div>
           </ListGroup.Item>
