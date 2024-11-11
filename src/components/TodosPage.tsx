@@ -178,27 +178,34 @@ const TodosPage: React.FC = () => {
           />
         </Modal.Body>
       </Modal>
-      <ListGroup className="mb-3">
-        {todos.map((todo) => (
-          <ListGroup.Item
-            key={todo.id}
-            className="d-flex justify-content-between align-items-center"
-          >
-            <div>
-              <h5>{todo.title}</h5>
-              <p>{todo.description}</p>
-            </div>
-            <div className="ml-auto">
-              <Button variant="link" onClick={() => openEditModal(todo)}>
-                <FaEdit size={20} />
-              </Button>
-              <Button variant="link" onClick={() => handleDeleteTodo(todo.id)}>
-                <FaTrash size={20} />
-              </Button>
-            </div>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      {todos.length === 0 ? (
+        <Alert variant="info">No todos available.</Alert>
+      ) : (
+        <ListGroup className="mb-3">
+          {todos.map((todo) => (
+            <ListGroup.Item
+              key={todo.id}
+              className="d-flex justify-content-between align-items-center"
+            >
+              <div>
+                <h5>{todo.title}</h5>
+                <p>{todo.description}</p>
+              </div>
+              <div className="ml-auto">
+                <Button variant="link" onClick={() => openEditModal(todo)}>
+                  <FaEdit size={20} />
+                </Button>
+                <Button
+                  variant="link"
+                  onClick={() => handleDeleteTodo(todo.id)}
+                >
+                  <FaTrash size={20} />
+                </Button>
+              </div>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      )}
       {totalPages > 1 && (
         <div className="pagination d-flex align-items-center justify-content-center mt-3 mb-3">
           <Button
