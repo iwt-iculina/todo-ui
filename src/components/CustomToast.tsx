@@ -27,11 +27,9 @@ function CustomToast({
       aria-atomic="true"
       style={{
         position: "fixed",
-        top: "1rem",
-        left: "50%",
-        transform: "translateX(-50%)",
+        bottom: "1rem",
+        right: "1rem",
         zIndex: 9999,
-        textAlign: "center",
       }}
     >
       <Toast
