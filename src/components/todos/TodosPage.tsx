@@ -11,8 +11,8 @@ import {
 } from "react-bootstrap";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import TodoForm from "./TodoForm";
-import backendAPI from "../axios";
-import "./App.css";
+import backendAPI from "../../axios";
+import "./TodosPage.css";
 
 interface Todo {
   id: string;
@@ -110,7 +110,7 @@ const TodosPage: React.FC = () => {
   };
 
   return (
-    <Container className="narrow-container">
+    <Container className="todo-container">
       <h1>Todos</h1>
       {error && <Alert variant="danger">{error}</Alert>}
       <Button

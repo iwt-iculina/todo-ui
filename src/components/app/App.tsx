@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import AppNavbar from "./Navbar";
-import Login from "./Login";
-import Registration from "./Registration";
-import { AuthProvider } from "./AuthContext";
-import TodosPage from "./TodosPage";
-import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
+import AppNavbar from "../Navbar";
+import Login from "../login/Login";
+import Registration from "../register/Registration";
+import { AuthProvider } from "../AuthContext";
+import TodosPage from "../todos/TodosPage";
+import ProtectedRoute from "../ProtectedRoute";
+import PublicRoute from "../PublicRoute";
 
 const App: React.FC = () => {
   return (

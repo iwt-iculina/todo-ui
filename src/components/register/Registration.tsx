@@ -1,45 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "./AuthContext";
-import backendAPI from "../axios";
-import CustomToast from "./CustomToast";
-import "./Login.css";
+import backendAPI from "../../axios";
+import "./Registration.css";
 
-const Login: React.FC = () => {
-  const location = useLocation();
-  const prefilledEmail = location.state?.email || "";
-  const [email, setEmail] = useState(prefilledEmail);
+const Registration: React.FC = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { login } = useAuth();
   const navigate = useNavigate();
-  const [showLogoutToast, setShowLogoutToast] = useState(false);
 
-  useEffect(() => {
-    const loggedOut = "loggedOut";
-    if (sessionStorage.getItem(loggedOut)) {
-      setShowLogoutToast(true);
-      sessionStorage.removeItem(loggedOut);
-    }
-  }, []);
-
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      const response = await backendAPI.post("/user/login", {
+      await backendAPI.post("/user/register", {
+        name,
         email,
         password,
       });
 
-      localStorage.setItem("jwtToken", response.data.token);
-      login();
+      setMessage("Registration successful!");
 
-      navigate("/todos");
+      navigate("/login", { state: { email } });
     } catch (error) {
-      const defaultErrorMessage = "Wrong credentials!";
+      const defaultErrorMessage = "Registration failed!";
       if (axios.isAxiosError(error) && error.response) {
         setMessage(error.response.data?.error || defaultErrorMessage);
       } else {
@@ -49,12 +36,18 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container className="login-container">
-      {showLogoutToast && (
-        <CustomToast message="You have been logged out." duration={3000} />
-      )}
-      <h2>Login</h2>
-      <Form onSubmit={handleLogin} className="mb-3">
+    <Container className="mt-5 registration-container">
+      <h2>Register</h2>
+      <Form onSubmit={handleSubmit} className="mb-3">
+        <Form.Group controlId="formName" className="mb-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </Form.Group>
         <Form.Group controlId="formEmail" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -74,7 +67,7 @@ const Login: React.FC = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Login
+          Register
         </Button>
       </Form>
       {message && (
@@ -85,11 +78,8 @@ const Login: React.FC = () => {
           {message}
         </Alert>
       )}
-      <p>
-        Don't have an account? <Link to="/register">Register here</Link>
-      </p>
     </Container>
   );
 };
 
-export default Login;
+export default Registration;
