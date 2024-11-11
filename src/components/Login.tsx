@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
 import backendAPI from "../axios";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const location = useLocation();
+  const prefilledEmail = location.state?.email || "";
+  const [email, setEmail] = useState(prefilledEmail);
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const { login } = useAuth();

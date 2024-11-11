@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import backendAPI from "../axios";
 
@@ -8,6 +9,7 @@ const Registration: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -20,6 +22,8 @@ const Registration: React.FC = () => {
       });
 
       setMessage("Registration successful!");
+
+      navigate("/login", { state: { email } });
     } catch (error) {
       const defaultErrorMessage = "Registration failed!";
       if (axios.isAxiosError(error) && error.response) {
