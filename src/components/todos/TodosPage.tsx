@@ -96,7 +96,7 @@ const TodosPage: React.FC = () => {
   const handleDeleteTodo = async (id: string) => {
     try {
       await backendAPI.delete(`/todos/${id}`);
-      fetchTodos(currentPage, filter, sort);
+      fetchTodos(todos.length > 1 ? currentPage : 0, filter, sort);
     } catch (error) {
       setError("Failed to delete todo. Please try again.");
     }
@@ -179,7 +179,9 @@ const TodosPage: React.FC = () => {
         </Modal.Body>
       </Modal>
       {todos.length === 0 ? (
-        <Alert variant="info">No todos available.</Alert>
+        <Alert variant="info" className="text-center">
+          No todos available.
+        </Alert>
       ) : (
         <ListGroup className="mb-3">
           {todos.map((todo) => (
