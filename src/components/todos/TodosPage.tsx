@@ -192,12 +192,17 @@ const TodosPage: React.FC = () => {
                 <p>{todo.description}</p>
               </div>
               <div className="ml-auto">
-                <Button variant="link" onClick={() => openEditModal(todo)}>
+                <Button
+                  variant="link"
+                  onClick={() => openEditModal(todo)}
+                  aria-label="Edit"
+                >
                   <FaEdit size={20} />
                 </Button>
                 <Button
                   variant="link"
                   onClick={() => handleDeleteTodo(todo.id)}
+                  aria-label="Delete"
                 >
                   <FaTrash size={20} />
                 </Button>
