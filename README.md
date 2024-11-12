@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Getting Started
+
+This project is dependent on [todo-api](https://github.com/iwt-iculina/todo-api)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
